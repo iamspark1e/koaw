@@ -1,0 +1,67 @@
+{
+  "name": "koaw-js",
+  "version": "0.0.1",
+  "description": "Cloudflare Worker version of Koa web application framework, customized, well documented.",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "test": "rollup -c ./rollup.config.js && jest --coverage",
+    "test:badges": "npm run test && make-coverage-badge",
+    "build": "rollup -c ./rollup.config.js",
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
+    "postversion": "git push --follow-tags",
+    "prepare": "husky install",
+    "lint": "eslint \"./src/**/*.{js,ts}\" --fix"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  },
+  "keywords": [
+    "Cloudflare Worker",
+    "Router"
+  ],
+  "author": "Arctome <hi@arcto.me>",
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/arctome/worker-koa"
+  },
+  "dependencies": {
+    "path-to-regexp": "^6.2.0"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.15.4",
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
+    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.4",
+    "@rollup/plugin-typescript": "^8.2.5",
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/parser": "^4.31.0",
+    "conventional-changelog-cli": "^2.1.1",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.2",
+    "husky": "^7.0.2",
+    "jest": "^27.1.1",
+    "lint-staged": "^11.1.2",
+    "make-coverage-badge": "^1.2.0",
+    "miniflare": "^1.4.1",
+    "prettier": "2.4.0",
+    "rollup": "^2.56.3",
+    "rollup-plugin-terser": "^7.0.2",
+    "terser": "^5.7.2",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.3"
+  },
+  "files": [
+    "/lib/index.js",
+    "/lib/index.d.ts",
+    "README.md"
+  ],
+  "jest": {
+    "coverageReporters": [
+      "json-summary"
+    ]
+  }
+}
