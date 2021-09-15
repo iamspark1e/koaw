@@ -23,7 +23,7 @@
   "author": "Arctome <hi@arcto.me>",
   "license": "MIT",
   "repository": {
-    "url": "https://github.com/arctome/worker-koa"
+    "url": "https://github.com/arctome/koaw"
   },
   "dependencies": {
     "path-to-regexp": "^6.2.0"

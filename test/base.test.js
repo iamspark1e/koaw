@@ -1,12 +1,13 @@
 const Miniflare = require("miniflare").Miniflare;
 const testSuite = require("./bootstrap");
 
-describe("Testing WorkerScaffold's Basic Features ", () => {
+describe("Testing Koaw's Basic Features ", () => {
   test("sync middleware works well", async () => {
     const mf = new Miniflare({
       script: testSuite(`
-            app.use("/base/sync", event => {
-              return new Response("Sync middleware works well")
+            app.use("/base/sync", ctx => {
+              ctx.res.body = "Sync middleware works well";
+              return ctx.end();
             })
             `),
     });
@@ -18,13 +19,15 @@ describe("Testing WorkerScaffold's Basic Features ", () => {
   test("async middleware works well", async () => {
     const mf = new Miniflare({
       script: testSuite(`
-            app.use("/base/async", async event => {
+            app.use("/base/async", async ctx => {
               const resp = await fetch("https://github.com");
               if(resp.ok) {
-                return new Response("Async middleware works well");
+                ctx.res.body = "Async middleware works well"
               } else {
-                return new Response("Async middleware meet some problem", {status: 500})
+                ctx.res.body = "Async middleware meet some problem"
+                ctx.res.status = 500
               }
+              return ctx.end();
             })
             `),
     });
@@ -36,23 +39,18 @@ describe("Testing WorkerScaffold's Basic Features ", () => {
   test("multi middlewares works well", async () => {
     const mf = new Miniflare({
       script: testSuite(`
-            app.use("/base/multi", event => {
-              const testHeader = new Headers();
-              testHeader.append("processor", "first");
-              const newRequest = new Request(event.request.url, {
-                ...event.request,
-                headers: testHeader
-              })
-              event.request = newRequest;
-              return event;
+            app.use("/base/multi", ctx => {
+              ctx.req.headers.processor = "first"
+              return ctx;
             })
-            app.use("/base/multi", async event => {
-              const testHeader = event.request.headers.get("processor");
-              if(testHeader === "first") {
-                return new Response("Response body is from processor Second.");
+            app.use("/base/multi", async ctx => {
+              if(ctx.req.headers.processor === "first") {
+                ctx.res.body = "Response body is from processor Second."
               } else {
-                return new Response("Response body is Only from processor Second, which is not correct.", {status: 500})
+                ctx.res.body = "Response body is Only from processor Second, which is not correct."
+                ctx.res.status = 500
               }
+              return ctx.end();
             })
             `),
     });
@@ -64,12 +62,11 @@ describe("Testing WorkerScaffold's Basic Features ", () => {
   test("tail process middlewares works well", async () => {
     const mf = new Miniflare({
       script: testSuite(`
-            app.use("/base/tail-process", {
-              default: event => {},
-              callback: (event, response) => {
-                response.headers.set("Test-Header", "Success")
-                return response;
-              }
+            app.use("/base/tail-process", ctx => {
+              return ctx.end().tail(ctx => {
+                ctx.res.headers["Test-Header"] = "Success"
+                return ctx;
+              })
             })`),
     });
     const res = await mf.dispatchFetch(
