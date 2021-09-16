@@ -6,13 +6,8 @@ module.exports = function testSuite(code, debug) {
   return `
     ${libCode}
     addEventListener('fetch', event => {
-      const app = new Koaw(event, {debug: ${Boolean(debug) || false}});
+      const app = new Koaw(event, {debug: ${Boolean(debug)}});
       ${code}
-      app.use(async ctx => {
-        ctx.res.body = ctx.req.url.href;
-        ctx.res.status = 404;
-        return ctx;
-      });
       
       event.respondWith(app.run());
     })

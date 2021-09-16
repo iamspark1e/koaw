@@ -1,58 +1,20 @@
-import * as PathToRegexp from "path-to-regexp";
-const { match } = PathToRegexp;
+import { ApplicationContextRequest, ApplicationContextResponse } from "./types";
+import KoawRouter from "./plugins/koaw-router";
 
-export type HttpMethod =
-  | "get"
-  | "post"
-  | "put"
-  | "patch"
-  | "delete"
-  | "head"
-  | "options"
-  | "trace";
-export type ExtendedHttpMethod =
-  | HttpMethod
-  | "copy"
-  | "link"
-  | "unlink"
-  | "purge"
-  | "lock"
-  | "unlock";
-interface ApplicationInternalMiddleware {
-  path: string;
-  fn: Function;
-  match: PathToRegexp.Match;
-}
 interface ApplicationOptions {
   debug?: Boolean;
 }
 interface HashMap {
   [propName: string]: any;
 }
-interface ApplicationContextRequest {
-  headers?: HashMap;
-  cookie?: HashMap;
-  body?: any;
-  url: URL;
-  query?: HashMap;
-  method: string;
-}
-interface ApplicationContextResponse {
-  body?: any;
-  redirect?: string;
-  status?: number;
-  statusText?: string;
-  headers?: HashMap;
-}
 interface ApplicationContext {
   finished: Boolean;
   req: ApplicationContextRequest;
   res: ApplicationContextResponse | HashMap;
-  match?: PathToRegexp.Match;
   tailHandlers: Array<Function>;
 }
 interface Koaw {
-  middleware: Array<ApplicationInternalMiddleware>;
+  middleware: Array<Function>;
   ctx: ApplicationContext;
   options: ApplicationOptions;
 }
@@ -70,7 +32,6 @@ class ApplicationContext {
       query: Object.fromEntries(url.searchParams),
     };
     this.res = { status: 200, headers: {} };
-    this.match = false;
     this.tailHandlers = [];
   }
   end() {
@@ -160,9 +121,6 @@ class Koaw {
     };
     return new Response(resp.body, respInit);
   }
-  private log(message: string): void {
-    this.options.debug ? console.log(message) : undefined;
-  }
 
   constructor(event: FetchEvent, options: ApplicationOptions) {
     this.middleware = [];
@@ -171,55 +129,25 @@ class Koaw {
     return this;
   }
 
-  use(fn: Function): Koaw;
-  use(path: Function | string, fn?: Function): Koaw {
-    let _path: string;
-    let _fn: Function;
-    if (typeof path === "function") {
-      _path = "";
-      _fn = path;
-    } else {
-      if (typeof fn !== "function")
-        throw new TypeError("`koaw` only accept functions as middleware");
-      _path = path;
-      _fn = fn;
-    }
-    this.middleware.push({ path: _path, fn: _fn, match: false });
+  use(fn: Function): Koaw {
+    if (typeof fn !== "function")
+      throw new Error(
+        "`koaw` middleware should be an Object with `object.fn` handler"
+      );
+    this.middleware.push(fn);
     return this;
   }
 
   async run() {
     if (!this.ctx.req) throw new Error("`koaw` didn't recieve any request");
-    const url = this.ctx.req.url;
-    // Pick all middlewares matched
-    const debugStartPick = Date.now();
-    const matchedMiddlewareQuene = this.middleware.filter(
-      (w: ApplicationInternalMiddleware) => {
-        if (w.path === "") return w;
-        const matcher: PathToRegexp.MatchFunction = match(w.path, {
-          decode: decodeURIComponent,
-        });
-        const isMatched = matcher(url.pathname);
-        if (isMatched) return { ...w, match: isMatched };
-      }
-    );
-    const handlersCount = matchedMiddlewareQuene.length;
-    this.log(
-      handlersCount +
-        " middlewares are picked, cost " +
-        (Date.now() - debugStartPick) +
-        "ms"
-    );
+    const handlersCount = this.middleware.length;
     if (handlersCount === 0)
       return new Response("Not Found by `koaw`", { status: 404 });
-    // Request bypass all matched middlewares, until ctx.finished
+    // Request bypass all middlewares, until ctx.finished
     for (let i = 0; i < handlersCount; i++) {
       if (this.ctx.finished) break;
-      this.ctx.match = matchedMiddlewareQuene[i].match;
-      let middlewareRes = await matchedMiddlewareQuene[i].fn(this.ctx);
-      this.ctx.req = middlewareRes.req;
+      let middlewareRes = await this.middleware[i](this.ctx);
       this.ctx.res = middlewareRes.res;
-      this.ctx.match = false;
     }
     // Consume all handlers in ctx.tailHandlers
     for (let j = 0; j < this.ctx.tailHandlers.length; j++) {
@@ -231,3 +159,6 @@ class Koaw {
 }
 
 export default Koaw;
+export { KoawRouter };
+// types
+export type Context = ApplicationContext;
