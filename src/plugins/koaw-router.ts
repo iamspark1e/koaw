@@ -1,5 +1,5 @@
 import * as PathToRegexp from "path-to-regexp";
-import type { Context as ApplicationContext } from "../index";
+import ApplicationContext from "../core";
 const { match } = PathToRegexp;
 
 interface KoawRoute {
@@ -18,6 +18,8 @@ interface KoawRouterComposedMiddleware {
 }
 
 class KoawRouter {
+  stack: Array<KoawRoute> = [];
+  rewrite: Array<string> = [];
   constructor() {
     this.stack = [];
     this.rewrite = [];
@@ -52,8 +54,13 @@ class KoawRouter {
     return this.verb("all", path, handler);
   }
   // TODO: add an rewrite method for `compose` to another path
-  rewriteTo(origin: string, to: string) {
-    return this.all("/(.*)", (ctx: ApplicationContext) => {});
+  rewriteTo(origin: string, to: string, method: string = "all") {
+    this.stack.push({
+      path: origin,
+      rewrite: to,
+      method,
+      handler: () => {},
+    });
   }
   // Handler of single method
   private verb(method: string, path: string, handler: Function) {
@@ -69,7 +76,7 @@ class KoawRouter {
     path: string,
     ctx: ApplicationContext
   ): Array<KoawRouterComposedMiddleware> {
-    let needReRoute: string | undefined = "";
+    let needReRoute: string = "";
     let finalHandlers = [];
     for (let i = 0; i < routes.length; i++) {
       let matcher = match(routes[i].path, {
@@ -78,6 +85,10 @@ class KoawRouter {
       });
       let isMatched = matcher(path);
       if (isMatched) {
+        if (this.rewrite.includes(path))
+          throw new Error(
+            "`KoawRouter` detect loop rewrite, cannot make a correct response"
+          );
         if (
           routes[i].rewrite !== undefined &&
           routes[i].rewrite &&
@@ -85,13 +96,15 @@ class KoawRouter {
           routes[i].rewrite !== path
         ) {
           this.rewrite.push(path);
-          needReRoute = routes[i].rewrite;
+          needReRoute = routes[i].rewrite || "";
           break;
         }
         finalHandlers.push({ handler: routes[i].handler, match: isMatched });
       }
     }
-    if (needReRoute) finalHandlers = this.compose(routes, needReRoute, ctx);
+    if (needReRoute) {
+      finalHandlers = this.compose(routes, needReRoute, ctx);
+    }
     return finalHandlers;
   }
 
@@ -105,7 +118,12 @@ class KoawRouter {
       );
       let tasks = this.compose(properRoutes, pathname, ctx);
       for (let i = 0; i < tasks.length; i++) {
-        ctx = await tasks[i].handler(ctx, tasks[i].match);
+        let handlerRes = await tasks[i].handler(ctx, tasks[i].match);
+        if (!(handlerRes instanceof ApplicationContext)) {
+          throw new TypeError(
+            "`KoawRouter` handler didn't return correct context"
+          );
+        }
         if (ctx.finished) break;
       }
       return ctx;

@@ -15,6 +15,9 @@ export type ExtendedHttpMethod =
   | "purge"
   | "lock"
   | "unlock";
+export interface HashMap {
+  [propName: string]: any;
+}
 export interface ApplicationContextRequest {
   headers?: HashMap;
   cookie?: HashMap;

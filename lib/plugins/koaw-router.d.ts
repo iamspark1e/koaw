@@ -9,6 +9,8 @@ interface KoawRouter {
     rewrite: Array<string>;
 }
 declare class KoawRouter {
+    stack: Array<KoawRoute>;
+    rewrite: Array<string>;
     constructor();
     get(path: string, handler: Function): void;
     post(path: string, handler: Function): void;
@@ -18,6 +20,8 @@ declare class KoawRouter {
     connect(path: string, handler: Function): void;
     trace(path: string, handler: Function): void;
     options(path: string, handler: Function): void;
+    all(path: string, handler: Function): void;
+    rewriteTo(origin: string, to: string, method?: string): void;
     private verb;
     private compose;
     route(): Function;
