@@ -102,28 +102,30 @@ function configureCredentials(options: CORSOption) {
   }
 }
 
+const defaultOptions = {
+  origin: "*",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+};
+
 export default function cors(options: boolean | CORSOption) {
   return (ctx: ApplicationContext) => {
-    if (typeof options === "object" && options.preflightContinue) return;
-    if (ctx.req.method === "OPTIONS") {
-      ctx.res.status =
-        typeof options === "object" && options.optionsSuccessStatus
-          ? options.optionsSuccessStatus
-          : 204;
-      ctx.res.body = null;
-      return ctx.end();
+    if (!options) return;
+    if (options === true) {
+      options = defaultOptions;
     }
-    return ctx.end().tail((ctx: ApplicationContext) => {
-      const clonedResponse = ctx.res;
-      if (options === false) return ctx;
-      if (options === true) {
-        options = {
-          origin: "*",
-          methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-          preflightContinue: false,
-          optionsSuccessStatus: 204,
-        };
+
+    if (typeof options === "object" && options.preflightContinue) return;
+    ctx.end().tail((ctx: ApplicationContext) => {
+      if (!options) return;
+      if (options === true) options = defaultOptions;
+      if (ctx.req.method === "OPTIONS") {
+        ctx.res.status = options.optionsSuccessStatus;
+        ctx.res.body = null;
+        return;
       }
+      const clonedResponse = ctx.res;
       clonedResponse.status = options.optionsSuccessStatus || 204;
 
       const headers = [];
@@ -138,7 +140,6 @@ export default function cors(options: boolean | CORSOption) {
           clonedResponse.headers[header.key] = header.value.toString();
       });
       ctx.res = clonedResponse;
-      return ctx;
     });
   };
 }

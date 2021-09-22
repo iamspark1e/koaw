@@ -87,7 +87,7 @@ class ApplicationContext {
     } catch (e) {
       throw new Error("`koaw` cannot parse url in ctx.redirect");
     }
-    this.res.redirect = url;
+    this.res.location = url;
     this.res.status = status || 302;
     this.finished = true;
     return this;

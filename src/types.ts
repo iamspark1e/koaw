@@ -28,7 +28,7 @@ export interface ApplicationContextRequest {
 }
 export interface ApplicationContextResponse {
   body?: any;
-  redirect?: string;
+  location?: string;
   status?: number;
   statusText?: string;
   headers?: HashMap;

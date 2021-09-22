@@ -9,5 +9,5 @@ interface CORSOption {
     preflightContinue?: boolean;
     optionsSuccessStatus?: number;
 }
-export default function cors(options: boolean | CORSOption): (ctx: ApplicationContext) => ApplicationContext | undefined;
+export default function cors(options: boolean | CORSOption): (ctx: ApplicationContext) => void;
 export {};

@@ -1,6 +1,6 @@
 import KoawRouter from "./plugins/koaw-router";
-import cors from './plugins/koaw-cors';
-import ApplicationContext from './core';
+import cors from "./plugins/koaw-cors";
+import ApplicationContext from "./core";
 interface ApplicationOptions {
     debug?: Boolean;
 }
@@ -14,7 +14,8 @@ declare class Koaw {
     private contextToResponse;
     constructor(event: FetchEvent, options: ApplicationOptions);
     use(fn: Function): Koaw;
+    private selfReturn;
     run(): Promise<Response>;
 }
 export default Koaw;
-export { KoawRouter, cors };
+export { KoawRouter, cors as KoawCORS };

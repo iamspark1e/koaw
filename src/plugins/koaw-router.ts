@@ -118,15 +118,9 @@ class KoawRouter {
       );
       let tasks = this.compose(properRoutes, pathname, ctx);
       for (let i = 0; i < tasks.length; i++) {
-        let handlerRes = await tasks[i].handler(ctx, tasks[i].match);
-        if (!(handlerRes instanceof ApplicationContext)) {
-          throw new TypeError(
-            "`KoawRouter` handler didn't return correct context"
-          );
-        }
+        await tasks[i].handler(ctx, tasks[i].match);
         if (ctx.finished) break;
       }
-      return ctx;
     };
   }
 }
