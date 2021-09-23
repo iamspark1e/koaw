@@ -33,7 +33,7 @@ addEventListener("fetch", (event) => {
   router.get("/example", (ctx) => {
     ctx.res.body = "hello example";
     ctx.res.status = 200;
-    return ctx.end();
+    ctx.end();
   });
 
   event.respondWith(app.run());
@@ -56,7 +56,7 @@ addEventListener("fetch", (event) => {
   router.get("/example", (ctx) => {
     ctx.res.body = "hello example";
     ctx.res.status = 200;
-    return ctx.end();
+    ctx.end();
   });
 
   event.respondWith(app.run());
@@ -139,7 +139,6 @@ router.get("/a/:id", (ctx, match) => {
   // Router's handler has additional param `match` for dynamic route.
   ctx.res.body = match.params.id;
   ctx.res.status = 200;
-  return ctx;
 });
 // other routes
 app.use(router.route());
