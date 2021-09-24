@@ -1,5 +1,6 @@
 # Koaw
 
+[![NPM latest version](https://badgen.net/npm/v/koaw-js)](https://www.npmjs.com/package/koaw-js)
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 [![Minified Gzip](https://badgen.net/bundlephobia/minzip/koaw-js)](https://bundlephobia.com/package/koaw-js)
 ![Coverage](./coverage/badge.svg)
