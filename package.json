@@ -60,8 +60,9 @@
     "README.md"
   ],
   "jest": {
+    "collectCoverage": true,
     "coverageReporters": [
-      "json-summary"
+      "lcovonly"
     ]
   }
 }
