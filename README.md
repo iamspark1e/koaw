@@ -1,6 +1,8 @@
 # Koaw
 
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
+[![Minified Gzip](https://badgen.net/bundlephobia/minzip/koaw-js)](https://bundlephobia.com/package/koaw-js)
+![Coverage](./coverage/badge.svg)
 
 A Koa-like web framework designed for Cloudflare Worker.
 
