@@ -118,4 +118,22 @@ describe("Testing Koaw's Router Features ", () => {
     let body = await res.text();
     expect(body).toBe("not-sync");
   });
+  test("`KoawRouter` works in chain usage", async () => {
+    const mf = new Miniflare({
+      script: testSuite(
+        `
+          const router = new KoawRouter();
+          router.rewriteTo('/base/sync', '/base/not-sync').get('/base/not-sync', (ctx, match) => {
+            ctx.res.body = 'not-sync'
+            ctx.end();
+          })
+          app.use(router.route())
+        `,
+        true
+      ),
+    });
+    const res = await mf.dispatchFetch("http://localhost:8787/base/sync");
+    let body = await res.text();
+    expect(body).toBe("not-sync");
+  });
 });

@@ -18,4 +18,4 @@ declare class Koaw {
     run(): Promise<Response>;
 }
 export default Koaw;
-export { KoawRouter, cors as KoawCORS };
+export { KoawRouter, cors };

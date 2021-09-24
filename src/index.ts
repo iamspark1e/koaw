@@ -64,7 +64,11 @@ class Koaw {
     ctx: ApplicationContext,
     handler: Function
   ): Promise<ApplicationContext> {
-    await handler(ctx);
+    try {
+      await handler(ctx);
+    } catch (e) {
+      throw e;
+    }
     return ctx;
   }
 
@@ -87,18 +91,18 @@ class Koaw {
       }
 
       return this.contextToResponse(this.ctx);
-    } catch (e: unknown) {
-      if (e instanceof Error) throw e;
+    } catch (e) {
       this.ctx.res.body =
         "Server Crashed, please try later or contact the admin of the website!";
       if (this.options.debug && e instanceof Error) {
         this.ctx.res.body = e.message;
       }
       this.ctx.res.status = 500;
+      this.ctx.end();
       return this.contextToResponse(this.ctx);
     }
   }
 }
 
 export default Koaw;
-export { KoawRouter, cors as KoawCORS };
+export { KoawRouter, cors };

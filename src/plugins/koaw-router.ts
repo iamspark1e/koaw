@@ -61,6 +61,7 @@ class KoawRouter {
       method,
       handler: () => {},
     });
+    return this;
   }
   // Handler of single method
   private verb(method: string, path: string, handler: Function) {
@@ -69,6 +70,7 @@ class KoawRouter {
       handler,
       method,
     });
+    return this;
   }
 
   private compose(

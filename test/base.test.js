@@ -29,4 +29,32 @@ describe("Testing Koaw's Basic Features ", () => {
     const res = await mf.dispatchFetch("http://localhost:8787/favicon.ico");
     expect(res.status).toBe(404);
   });
+  test("correctly catch errors in middleware", async () => {
+    const mf = new Miniflare({
+      script: testSuite(`
+            app.use(ctx => {
+              throw new Error("crash")
+            })
+            `),
+    });
+    const res = await mf.dispatchFetch("http://localhost:8787/favicon.ico");
+    expect(res.status).toBe(500);
+  });
+  test("`Koaw` supports chain usage", async () => {
+    const mf = new Miniflare({
+      script: testSuite(`
+            app.use(ctx => {
+              ctx.res.body = 'first'
+            }).use(ctx => {
+              ctx.res.body = 'second'
+              ctx.end();
+            }).use(ctx => {
+              ctx.res.body = 'third'
+            })
+            `),
+    });
+    const res = await mf.dispatchFetch("http://localhost:8787/hello");
+    let body = await res.text();
+    expect(body).toBe("second");
+  });
 });

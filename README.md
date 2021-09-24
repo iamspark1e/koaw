@@ -19,7 +19,7 @@ yarn add koaw-js
 You can add offical plugins, here are some example,
 
 ```bash
-yarn add koaw-plugin-markdown
+yarn add koaw-plugin-markdown # Not developed Yet!
 ```
 
 ## Usage
@@ -52,18 +52,21 @@ import Koaw, { KoawRouter, cors } from "koaw-js";
 addEventListener("fetch", (event) => {
   const app = new Koaw(event);
   const router = new KoawRouter();
-  app.use(cors(true));
+  // KoawRouter's handlers
   router.get("/example", (ctx) => {
     ctx.res.body = "hello example";
     ctx.res.status = 200;
     ctx.end();
   });
+  // Actually inject middlewares in `Koaw` core
+  app.use(cors(true));
+  app.use(router.route());
 
   event.respondWith(app.run());
 });
 ```
 
-## API Reference
+> `Koaw` core and `KoawRouter` all support chain usage.
 
 ## API Reference
 
@@ -149,3 +152,15 @@ event.respondWith(app.run());
 ### cors
 
 The function `cors` is just so simple, you can pass only `true`, and all CORS configuration will work as default. If you want additional config, you can refer [cors in express.js](https://www.npmjs.com/package/cors)
+
+## Q & A
+
+### Q: Why not continuous maintain `@arctome/worker-scaffold` ?
+
+A: The reason is very simple. `WorkerScaffold` is based on `Response` type detection, every step you need construct a new `Response`, which needs a lot of code. Also, construct a `Response` is not an easy way for a Router package, plenty of detection, plenty of clone and re-construction, made the code of core very difficult to maintain. Therefore, I create this package to replace the "old way".
+
+> Another reason is that I want to extract the plugins not indispensable. That will allow more plugins developed by community.
+
+### Q: Performance ?
+
+A: Not test for now. Will be added soon.
