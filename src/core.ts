@@ -3,6 +3,7 @@ import type {
   ApplicationContextResponse,
   HashMap,
 } from "./types";
+import { proxyGetHeader } from "./helpers/helper";
 
 interface ApplicationContext {
   finished: Boolean;
@@ -19,7 +20,8 @@ class ApplicationContext {
       url,
       method: event.request.method.toLowerCase() || "get",
       // @ts-ignore
-      headers: Object.fromEntries(event.request.headers.entries()),
+      headers: proxyGetHeader(event.request.headers),
+      // headers: Object.fromEntries(event.request.headers.entries()),
       // @ts-ignore
       query: Object.fromEntries(url.searchParams),
     };

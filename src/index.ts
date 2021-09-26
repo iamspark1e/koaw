@@ -1,5 +1,6 @@
 import { ApplicationContextResponse } from "./types";
 import KoawRouter from "./plugins/koaw-router";
+import Transformer from "./plugins/koaw-transformer";
 import cors from "./plugins/koaw-cors";
 import ApplicationContext from "./core";
 
@@ -105,4 +106,4 @@ class Koaw {
 }
 
 export default Koaw;
-export { KoawRouter, cors };
+export { KoawRouter, cors, Transformer };

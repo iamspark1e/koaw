@@ -1,4 +1,5 @@
 import KoawRouter from "./plugins/koaw-router";
+import Transformer from "./plugins/koaw-transformer";
 import cors from "./plugins/koaw-cors";
 import ApplicationContext from "./core";
 interface ApplicationOptions {
@@ -18,4 +19,4 @@ declare class Koaw {
     run(): Promise<Response>;
 }
 export default Koaw;
-export { KoawRouter, cors };
+export { KoawRouter, cors, Transformer };
