@@ -1,3 +1,9 @@
+## [0.0.2](https://github.com/arctome/koaw/compare/v0.0.1...v0.0.2) (2021-09-27)
+
+### Features
+
+- **plugin:** add `Transformer` for convert middlewares that return `Response` ([ac5d881](https://github.com/arctome/koaw/commit/ac5d88136d44d01d798d946b9b4453ef425e3afc))
+
 ## 0.0.1 (2021-09-24)
 
 ### Features
