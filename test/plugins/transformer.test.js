@@ -1,6 +1,7 @@
 const Miniflare = require("miniflare").Miniflare;
 const testSuite = require("../bootstrap");
 
+// TODO: test for `Transformer` needs to be extended.
 describe("Testing Koaw's Transformer Features ", () => {
   test("fetch `Response` can be transformed into `context`", async () => {
     const mf = new Miniflare({
