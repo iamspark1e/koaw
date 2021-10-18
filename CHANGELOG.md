@@ -1,3 +1,11 @@
+## [0.0.3-canary.0](https://github.com/arctome/koaw/compare/v0.0.2...v0.0.3-canary.0) (2021-10-18)
+
+### Bug Fixes
+
+- `cors` plugin return 204 for every request ([1f0a18f](https://github.com/arctome/koaw/commit/1f0a18fe2cf7d505df439e9256b58ebe9b803e96))
+- `cors` plugin return 204 for every request ([51ff14f](https://github.com/arctome/koaw/commit/51ff14f80be5248e351a9018e0a789343dff0cb0))
+- fix empty option error in `new Koaw(event, options?)` ([cc0a6a6](https://github.com/arctome/koaw/commit/cc0a6a62dfbeeb8e415a56abd7282519113ace6e))
+
 ## [0.0.2](https://github.com/arctome/koaw/compare/v0.0.1...v0.0.2) (2021-09-27)
 
 ### Features
