@@ -117,17 +117,14 @@ export default function cors(options: boolean | CORSOption) {
     }
 
     if (typeof options === "object" && options.preflightContinue) return;
-    ctx.end().tail((ctx: ApplicationContext) => {
+    ctx.tail((ctx: ApplicationContext) => {
       if (!options) return;
       if (options === true) options = defaultOptions;
       if (ctx.req.method === "OPTIONS") {
-        ctx.res.status = options.optionsSuccessStatus;
+        ctx.res.status = options.optionsSuccessStatus || 204;
         ctx.res.body = null;
-        return;
       }
       const clonedResponse = ctx.res;
-      clonedResponse.status = options.optionsSuccessStatus || 204;
-
       const headers = [];
       headers.push(configureAllowedHeaders(options));
       headers.push(configureCredentials(options));
