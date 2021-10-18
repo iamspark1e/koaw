@@ -95,7 +95,7 @@ class Koaw {
     } catch (e) {
       this.ctx.res.body =
         "Server Crashed, please try later or contact the admin of the website!";
-      if (this.options.debug && e instanceof Error) {
+      if (this.options && this.options.debug && e instanceof Error) {
         this.ctx.res.body = e.message;
       }
       this.ctx.res.status = 500;
