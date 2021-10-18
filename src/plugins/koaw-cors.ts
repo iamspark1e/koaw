@@ -120,9 +120,10 @@ export default function cors(options: boolean | CORSOption) {
     ctx.tail((ctx: ApplicationContext) => {
       if (!options) return;
       if (options === true) options = defaultOptions;
-      if (ctx.req.method === "OPTIONS") {
+      if (ctx.req.method === "options") {
         ctx.res.status = options.optionsSuccessStatus || 204;
         ctx.res.body = null;
+        ctx.end();
       }
       const clonedResponse = ctx.res;
       const headers = [];
