@@ -1,3 +1,9 @@
+## [0.0.3-canary.1](https://github.com/arctome/koaw/compare/v0.0.3-canary.0...v0.0.3-canary.1) (2021-10-19)
+
+### Bug Fixes
+
+- `Transformer.responseToCtx` throw error when response does not contain "Content-Type" header ([e7f22a2](https://github.com/arctome/koaw/commit/e7f22a24575bcaf77a302d2e393fdc854e92f421))
+
 ## [0.0.3-canary.0](https://github.com/arctome/koaw/compare/v0.0.2...v0.0.3-canary.0) (2021-10-18)
 
 ### Bug Fixes

@@ -1,6 +1,6 @@
 {
   "name": "koaw-js",
-  "version": "0.0.3-canary.0",
+  "version": "0.0.3-canary.1",
   "description": "Cloudflare Worker version of Koa web application framework, customized, well documented.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
