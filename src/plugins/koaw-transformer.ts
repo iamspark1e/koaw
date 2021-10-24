@@ -14,7 +14,7 @@ async function responseToCtx(response: Response) {
   res.headers = proxyGetHeader(response.headers);
   if (res.headers["content-type"]) {
     if (res.headers["content-type"].includes("application/json")) {
-      res.body = await response.json();
+      res.body = await response.text();
     } else if (
       res.headers["content-type"].includes("application/x-www-form-urlencoded")
     ) {
