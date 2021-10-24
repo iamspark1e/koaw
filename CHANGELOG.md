@@ -1,3 +1,9 @@
+## [0.0.3-canary.2](https://github.com/arctome/koaw/compare/v0.0.3-canary.1...v0.0.3-canary.2) (2021-10-24)
+
+### Bug Fixes
+
+- `Transformer` should not parse JSON response automatically ([00712ce](https://github.com/arctome/koaw/commit/00712ce73dad09539c18e36d25a8ccc23e066f52))
+
 ## [0.0.3-canary.1](https://github.com/arctome/koaw/compare/v0.0.3-canary.0...v0.0.3-canary.1) (2021-10-19)
 
 ### Bug Fixes
