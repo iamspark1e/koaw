@@ -1,3 +1,10 @@
+## [0.0.3](https://github.com/arctome/koaw/compare/v0.0.3-canary.2...v0.0.3) (2022-02-18)
+
+### Features
+
+- update miniflare to v2 ([b7b4d85](https://github.com/arctome/koaw/commit/b7b4d85d5c6f3ff8f84981d483cdee0b5b1e3723))
+- update miniflare to v2 with audit fix ([9cb58d2](https://github.com/arctome/koaw/commit/9cb58d22482c5b227d2aff23a489df30cb99d1ed))
+
 ## [0.0.3-canary.2](https://github.com/arctome/koaw/compare/v0.0.3-canary.1...v0.0.3-canary.2) (2021-10-24)
 
 ### Bug Fixes
