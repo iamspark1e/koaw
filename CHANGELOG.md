@@ -1,3 +1,9 @@
+# [0.1.0](https://github.com/arctome/koaw/compare/v0.0.4...v0.1.0) (2022-02-18)
+
+### Bug Fixes
+
+- fix actions of publish, upgrade to setup-node@v2, add always-auth ([9195e77](https://github.com/arctome/koaw/commit/9195e77f7f7118a4b029da2c3baa33086d66306c))
+
 ## [0.0.4](https://github.com/arctome/koaw/compare/v0.0.3-canary.2...v0.0.4) (2022-02-18)
 
 ### Bug Fixes
