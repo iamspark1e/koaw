@@ -10,7 +10,7 @@ A Koa-like web framework designed for Cloudflare Worker.
 
 > If you are using my old package called `cf-worker-gateway` or `worker-scaffold`, I suggest switching to this package. Using `ctx` is more easily to maintain.
 
-> English is not my native language; please excuse typing errors. Improvement about documents is also welcomed!
+> English is not my native language; please forgive my typing errors. Improvement about documents is also welcomed!
 
 ## Installation
 
