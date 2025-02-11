@@ -1,7 +1,8 @@
-# Koaw
+> This project is marked as deprecated since 2025, today I recommend [Hono](https://github.com/honojs/hono), blazing fast and build for edge runtimes.
+
+# Koaw (Deprecated)
 
 [![NPM latest version](https://badgen.net/npm/v/koaw-js)](https://www.npmjs.com/package/koaw-js)
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 [![Minified Gzip](https://badgen.net/bundlephobia/minzip/koaw-js)](https://bundlephobia.com/package/koaw-js)
 ![Github Action Test](https://github.com/arctome/koaw/actions/workflows/test.yml/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/arctome/koaw/badge.svg?branch=main)](https://coveralls.io/github/arctome/koaw?branch=main)
